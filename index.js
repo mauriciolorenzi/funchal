@@ -1,5 +1,7 @@
+const { hostname } = require('os');
+
 const app = require('express')(),
-port = 3000,
+port = process.env.PORT || 8080,
 fs = require('fs');
 
 function readFile(filename)
@@ -27,6 +29,6 @@ app.get('/almoco', function (req, res) {
         }
   });
 
-app.listen(port, () => {
-    console.log(`app listening at http://localhost:${port}`)
+app.listen(port, hostname, () => {
+    console.log(`app listening at http://${hostname}:${port}`)
   });
