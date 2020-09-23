@@ -2,12 +2,13 @@
 <html>
 
 <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
     <title>Cardapio pizzaria Funchal</title>
 </head>
 
 <body>
-    <iframe src = "/ViewerJS/#../pizzaria.pdf" width='100%' height='99%' allowfullscreen webkitallowfullscreen></iframe>
-    <a href="/ViewerJS/#../pizzaria.pdf" target="_blank">pdf</a>
+    <canvas id="pdfcanvas"></canvas>
 </body>
-
+<script src="render-pdf-pizzaria.js"></script>
 </html>

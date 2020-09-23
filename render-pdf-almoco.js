@@ -16,11 +16,16 @@ function ready(callbackFunc) {
 }
 
 ready(function () {
-    pdfjsLib.getDocument('./almoco.pdf').then(doc => {
+    let pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+    // The workerSrc property shall be specified.
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
+    
+    pdfjsLib.getDocument('./almoco.pdf').promise.then(doc => {
         doc.getPage(1).then(page => {
-            const canvas = document.getElementById('pdfcanvas');
+            let canvas = document.getElementById('pdfcanvas');
             let context = canvas.getContext("2d");
-            let viewport = page.getViewport(2);
+            let viewport = page.getViewport({scale: 1});
             canvas.width = viewport.width;
             canvas.height = viewport.height;
 
@@ -29,5 +34,8 @@ ready(function () {
                 viewport: viewport
             });
         });
+    }, (reason) => {
+        // PDF loading error
+        console.error(reason);
     });
 });
