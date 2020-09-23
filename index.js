@@ -5,10 +5,17 @@ app = express(),
 port = process.env.PORT || 8080,
 fs = require('fs');
 
-app.use('/almoco', express.static(__dirname + '/almoco.pdf'));
-app.use('/pizzaria', express.static(__dirname + '/pizzaria.pdf'));
+app.use('/almoco.pdf', express.static(__dirname + '/almoco.pdf'));
 
-/* app.get('/almoco', function (req, res) {
+app.get('/almoco', function (req, res) {
+    res.sendFile(`${__dirname}/almoco.html`);
+  });
+
+  app.get('/pizzaria', function (req, res) {
+    res.sendFile(`${__dirname}/pizzaria.html`);
+  });
+  
+ /*  app.get('/almoco', function (req, res) {
     const data = fs.readFileSync('./almoco.pdf');
         if (data) {
               res.end(data);
