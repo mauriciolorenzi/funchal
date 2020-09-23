@@ -8,7 +8,7 @@ fs = require('fs');
 app.use('/almoco.pdf', express.static(__dirname + '/almoco.pdf'));
 
 app.get('/almoco', function (req, res) {
-    res.sendFile(`${__dirname}/almoco.html`);
+    res.redirect('/web/viewer.html?file=almoco.pdf');
   });
 
   app.get('/pizzaria', function (req, res) {
