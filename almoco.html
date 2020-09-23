@@ -2,11 +2,35 @@
 <html>
 
 <head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.min.js"></script>
     <title>Cardapio almoço Funchal</title>
 </head>
 
 <body>
-    <iframe src = "/ViewerJS/#../almoco.pdf" width='100%' height='99%' allowfullscreen webkitallowfullscreen></iframe>
-    <a href="/ViewerJS/#../almoco.pdf" target="_blank">pdf</a>
+    <canvas id="pdfcanvas"></canvas>
+    <script>
+        let pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+        // The workerSrc property shall be specified.
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
+        pdfjsLib.getDocument('./almoco.pdf').promise.then(doc => {
+            doc.getPage(1).then(page => {
+                let canvas = document.getElementById('pdfcanvas');
+                let context = canvas.getContext("2d");
+                let viewport = page.getViewport(2);
+                canvas.width = viewport.width;
+                canvas.height = viewport.height;
+
+                page.render({
+                    canvasContext: context,
+                    viewport: viewport
+                });
+            });
+        }, (reason) => {
+            // PDF loading error
+            console.error(reason);
+        });
+    </script>
 </body>
+
 </html>
