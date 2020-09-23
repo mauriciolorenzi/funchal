@@ -2,10 +2,10 @@ const { hostname } = require('os');
 
 const express = require('express'),
 app = express(),
-port = process.env.PORT || 8080,
+port = process.env.PORT || 4000,
 fs = require('fs');
 
-app.use('/almoco.pdf', express.static(__dirname + '/almoco.pdf'));
+//app.use('/almoco.pdf', express.static(__dirname + '/almoco.pdf'));
 
 app.get('/almoco', function (req, res) {
     res.redirect('/web/viewer.html?file=almoco.pdf');
@@ -35,6 +35,6 @@ app.get('/almoco', function (req, res) {
         }
   }); */
 
-app.listen(port, hostname, () => {
-    console.log(`app listening at http://${hostname}:${port}`)
+app.listen(port, () => {
+    console.log(`app listening at http://localhost:${port}`)
   });
