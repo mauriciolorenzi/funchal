@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Manager</title>
+    <link rel="stylesheet" href="/css/manage-files.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <span>File Manager</span>
+            <a href="/almoco" target="_blank">Almoço</a>
+            <a href="/pizzaria" target="_blank">Pizzaria</a>
+        </nav>
+    </header>
+    <main>
+        <div class="wrapper">
+            <form action="sendfiles" title="filesForm" method="POST" enctype="multipart/form-data">
+                <div>
+                    <label>Choose the files to upload</label>
+                    <input type="file" name="files" multiple="multiple" />
+                    <div>
+                        <button type="submit">Send Files</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>
