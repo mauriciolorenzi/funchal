@@ -4,13 +4,9 @@ const express = require('express'),
   fs = require('fs'),
   formidable = require('formidable');
 
-/* app.use('/files/almoco.pdf', express.static(`${__dirname}/files/almoco.pdf`));
-app.use('/files/pizzaria.pdf', express.static(`${__dirname}/files/pizzaria.pdf`)); */
 app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
 app.use('/files', express.static('files'));
-
-//app.use('/render-pdf.js', express.static(`${__dirname}/render-pdf.js`));
 
 app.get('/almoco', function (req, res) {
   res.sendFile(`${__dirname}/html/almoco.html`);
