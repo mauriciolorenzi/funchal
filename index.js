@@ -1,15 +1,18 @@
 const amazons3 = require('./amazons3');
 
-const result = require('dotenv').config(),
-  express = require('express'),
+const express = require('express'),
   app = express(),
   port = process.env.PORT || 4000,
   fs = require('fs'),
   formidable = require('formidable');
+  
+if (app.get('env') == 'development') {
+  const result = require('dotenv').config();
 
   if (result.error) {
     throw result.error
   }
+}
 
 app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
@@ -44,7 +47,7 @@ app.post('/sendfiles', function (req, res) {
     for (var i = 0; i < files.length; i++) {
       let fileStream = fs.createReadStream(files[i].path);
       fileStream.on('error', function (err) {
-          console.log('File Error', err);
+        console.log('File Error', err);
       });
 
       amazons3.uploadFile(fileStream, files[i].name);
