@@ -16,16 +16,27 @@ function ready(callbackFunc) {
 }
 
 ready(function () {
-    let pdfjsLib = window['pdfjs-dist/build/pdf'];
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
 
-    pdfjsLib.getDocument(`/files${window.location.pathname}.pdf`).promise.then(doc => {
-        renderCanvas(doc.numPages);
-        for(var i = 1; i <= doc.numPages; i++)
-        {
-            renderPdfPage(doc, i);
-        }
-    });
+    let xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        
+        let url = this.responseText;
+
+        let pdfjsLib = window['pdfjs-dist/build/pdf'];
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.6.347/pdf.worker.min.js';
+        
+        pdfjsLib.getDocument(url).promise.then(doc => {
+            renderCanvas(doc.numPages);
+            for(var i = 1; i <= doc.numPages; i++)
+            {
+                renderPdfPage(doc, i);
+            }
+        });
+      }
+    };
+    xhttp.open("GET", `/getFileUrl?fileName=${window.location.pathname.replace("\/", '')}`, true);
+    xhttp.send();
 });
 
 function renderCanvas(totalCanvas)

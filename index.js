@@ -1,12 +1,18 @@
-const express = require('express'),
+const amazons3 = require('./amazons3');
+
+const result = require('dotenv').config(),
+  express = require('express'),
   app = express(),
   port = process.env.PORT || 4000,
   fs = require('fs'),
   formidable = require('formidable');
 
+  if (result.error) {
+    throw result.error
+  }
+
 app.use('/js', express.static('js'));
 app.use('/css', express.static('css'));
-app.use('/files', express.static('files'));
 
 app.get('/almoco', function (req, res) {
   res.sendFile(`${__dirname}/html/almoco.html`);
@@ -14,7 +20,10 @@ app.get('/almoco', function (req, res) {
 
 app.get('/pizzaria', function (req, res) {
   res.sendFile(`${__dirname}/html/pizzaria.html`);
+});
 
+app.get('/getFileUrl', function (req, res) {
+  res.send(amazons3.getFileUrl(req.query.fileName));
 });
 
 app.get('/alterpizzadocuments', function (req, res) {
@@ -33,12 +42,12 @@ app.post('/sendfiles', function (req, res) {
     }
 
     for (var i = 0; i < files.length; i++) {
-      let oldpath = files[i].path, newpath = `${__dirname}/files/${files[i].name}`;
-      fs.rename(oldpath, newpath, function (err) {
-        if (err) {
-          throw err;
-        }
+      let fileStream = fs.createReadStream(files[i].path);
+      fileStream.on('error', function (err) {
+          console.log('File Error', err);
       });
+
+      amazons3.uploadFile(fileStream, files[i].name);
     }
     res.redirect('/alterpizzadocuments');
     res.end();
