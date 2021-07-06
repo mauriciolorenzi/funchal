@@ -25,6 +25,11 @@ app.get('/pizzaria', function (req, res) {
   res.sendFile(`${__dirname}/html/pizzaria.html`);
 });
 
+app.get('/delorenzi', function (req, res) {
+  res.sendFile(`${__dirname}/html/delorenzi.html`);
+});
+
+
 app.get('/getFileUrl', function (req, res) {
   res.send(amazons3.getFileUrl(req.query.fileName));
 });

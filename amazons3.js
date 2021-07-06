@@ -27,6 +27,13 @@ function getFileUrl(fileName) {
             };
             return s3.getSignedUrl('getObject', params);
             break;
+        case 'delorenzi':
+            params = {
+                Bucket: process.env.BUCKET_NAME,
+                Key: process.env.PDF_KEY_DELORENZI,
+            };
+            return s3.getSignedUrl('getObject', params);
+            break;
     }
 }
 
