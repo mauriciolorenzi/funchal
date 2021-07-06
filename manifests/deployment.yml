@@ -1,0 +1,19 @@
+apiVersion : apps/v1
+kind: Deployment
+metadata:
+  name: menumanager 
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: menumanager
+  template:
+    metadata:
+      labels:
+        app: menumanager 
+    spec:
+      containers:
+        - name: menumanager 
+          image: acrmenumanager.azurecr.io/menumanager
+          ports:
+          - containerPort: 80
