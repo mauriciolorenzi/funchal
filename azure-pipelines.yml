@@ -3,7 +3,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/docker
 
 trigger:
-- master
+- prod
 
 resources:
 - repo: self
@@ -14,7 +14,7 @@ variables:
   dockerRegistryServiceConnection: 'e237bfd8-c7c6-427d-ac9d-8216348f0ca9'
   imageRepository: 'menumanager'
   containerRegistry: 'acrmenumanager.azurecr.io'
-  dockerfilePath: '**/Dockerfile'
+  dockerfilePath: '**/Dockerfiles'
   tag: '$(Build.BuildId)'
   imagePullSecret: 'acrmenumanagereaab-auth'
 
@@ -56,7 +56,7 @@ stages:
     displayName: Deploy
     pool:
       vmImage: $(vmImageName)
-    environment: 'mauriciolorenzifunchal.main'
+    environment: 'mauriciolorenzi.menu-manager.main'
     strategy:
       runOnce:
         deploy:
@@ -73,8 +73,8 @@ stages:
             inputs:
               action: deploy
               manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
+                $(Pipeline.Workspace)/kubernetes/deployment.yml
+                $(Pipeline.Workspace)/kubernetes/service.yml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
@@ -86,7 +86,7 @@ stages:
     pool:
       vmImage: $(vmImageName)
 
-    environment: 'mauriciolorenzifunchal.$(k8sNamespaceForPR)'
+    environment: 'mauriciolorenzi.menu-manager.$(k8sNamespaceForPR)'
     strategy:
       runOnce:
         deploy:
@@ -114,8 +114,8 @@ stages:
               action: deploy
               namespace: $(k8sNamespaceForPR)
               manifests: |
-                $(Pipeline.Workspace)/manifests/deployment.yml
-                $(Pipeline.Workspace)/manifests/service.yml
+                $(Pipeline.Workspace)/kubernetes/deployment.yml
+                $(Pipeline.Workspace)/kubernetes/service.yml
               imagePullSecrets: |
                 $(imagePullSecret)
               containers: |
