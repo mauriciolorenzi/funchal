@@ -1,3 +1,5 @@
+using MenuManagerWebAPI.Interfaces;
+using MenuManagerWebAPI.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
@@ -27,6 +29,9 @@ namespace MenuManagerWebAPI
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddSingleton(typeof(IMongoDAO<>), typeof(MongoDAO<>));
+            services.AddSingleton(typeof(IMenuService), typeof(MenuService));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
