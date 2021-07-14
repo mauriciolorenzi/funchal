@@ -25,7 +25,6 @@ namespace MenuManagerWebAPI.Services
                 { 
                     Message = "Menu created successfully"
                 };
-
             }
             catch (Exception exception)
             {
@@ -46,7 +45,7 @@ namespace MenuManagerWebAPI.Services
                 {
                     Message = "Menu returned successfully",
                     Object = _mongoDAO.GetById(id)
-            };
+                };
             }
             catch (Exception exception)
             {
@@ -68,7 +67,6 @@ namespace MenuManagerWebAPI.Services
                     Message = "Returned all menus successfully",
                     Object = _mongoDAO.GetAll()
                 };
-
             }
             catch (Exception exception)
             {
@@ -125,7 +123,7 @@ namespace MenuManagerWebAPI.Services
             }
         }
 
-        public Response Remove(int id)
+        public Response Remove(string id)
         {
             try
             {

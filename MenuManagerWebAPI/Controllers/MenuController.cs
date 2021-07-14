@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MenuManagerWebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/menu")]
     [ApiController]
     public class MenuController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace MenuManagerWebAPI.Controllers
             return _menuService.GetById(id);
         }
 
-        [HttpGet("GetAll")]
+        [HttpGet("get-all")]
         public Response GetAll()
         {
             return _menuService.GetAll();
@@ -40,12 +40,12 @@ namespace MenuManagerWebAPI.Controllers
         }
 
         [HttpDelete]
-        public Response Remove(int id)
+        public Response Remove(string id)
         {
             return _menuService.Remove(id);
         }
 
-        [HttpDelete]
+        [HttpDelete("remove-all")]
         public Response RemoveAll()
         {
             return _menuService.RemoveAll();

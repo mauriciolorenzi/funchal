@@ -45,7 +45,7 @@ namespace MenuManagerWebAPI.Services
             return models;
         }
 
-        public T GetById(ObjectId id) => this.GetByFilter(Builders<T>.Filter.Eq(e => e._id, id), null)?.FirstOrDefault();
+        public T GetById(ObjectId id) => this.GetByFilter(Builders<T>.Filter.Eq(e => new ObjectId(e._id), id), null)?.FirstOrDefault();
 
         public T GetById(string id) => this.GetById(new ObjectId(id));
 
@@ -73,7 +73,7 @@ namespace MenuManagerWebAPI.Services
 
         public async Task Remove(T model) => await this.Remove(Builders<T>.Filter.Eq("_id", model._id));
 
-        public async Task Remove(int id) => await this.Remove(Builders<T>.Filter.Eq("_id", id));
+        public async Task Remove(string id) => await this.Remove(Builders<T>.Filter.Eq("_id", id));
 
         public async Task RemoveAll()
         {

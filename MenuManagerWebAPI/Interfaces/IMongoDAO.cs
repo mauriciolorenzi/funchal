@@ -25,7 +25,7 @@ namespace MenuManagerWebAPI.Interfaces
         
         public Task Remove(T model);
 
-        public Task Remove(int id);
+        public Task Remove(string id);
 
         public Task RemoveAll();
         

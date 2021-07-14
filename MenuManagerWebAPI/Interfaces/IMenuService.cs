@@ -15,7 +15,7 @@ namespace MenuManagerWebAPI.Interfaces
 
         public Response Remove(Menu menu);
 
-        public Response Remove(int id);
+        public Response Remove(string id);
 
         public Response RemoveAll();
     }
