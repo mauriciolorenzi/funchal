@@ -14,8 +14,12 @@ export const App = () => {
             <Route exact path='/'>
                 <Home />
             </ Route>
-            <Route path='/create' component={CreateMenu} />
-            <Route path='/edit/:id' component={EditMenu} />
+            <Route path='/create'>
+                <CreateMenu />
+            </Route>
+            <Route path='/edit/:id'>
+                <EditMenu />
+            </ Route>
         </Layout>
     );
 }

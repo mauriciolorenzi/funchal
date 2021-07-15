@@ -10,12 +10,19 @@ export const Home = () => {
     const handleRoute = (route) => {
         history.push(route);
     }
+
     const [menus, setMenus] = useState([]);
 
     const getMenus = () => {
         axios.get('api/menu/get-all').then((response) => {
-            setMenus(response.data.object);
-        })
+            if (response.data.exception) {
+                console.log(response.data.exception);
+            } else {
+                setMenus(response.data.object);
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
     }
 
     const deleteMenu = (id) => {
@@ -23,6 +30,14 @@ export const Home = () => {
             'params': {
                 'id': id
             }
+        }).then((response) => {
+            if (response.data.exception) {
+                console.log(response.data.exception);
+            } else {
+                getMenus();
+            }
+        }).catch((error) => {
+            console.log(error);
         });
     }
 
@@ -47,7 +62,7 @@ export const Home = () => {
                 <tbody>
                     {
                         menus.map((object, index) => (
-                            <tr key={index} onClick={() => { handleRoute(`/edit/${object._id}`) }}>
+                            <tr key={index} onClick={() => { handleRoute(`/edit/${object._id}`); }}>
                                 <th scope="row">{index + 1}</th>
                                 <td>{object.name}</td>
                                 <td>{object.description}</td>

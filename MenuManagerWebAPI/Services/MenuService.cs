@@ -3,6 +3,7 @@ using MenuManagerWebAPI.Models;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace MenuManagerWebAPI.Services
 {
@@ -19,6 +20,15 @@ namespace MenuManagerWebAPI.Services
         {
             try
             {
+                if (_mongoDAO.GetByFilter(Builders<Menu>.Filter.Eq(e => e.Name, menu.Name), null)?.Count > 0)
+                {                   
+                    return new Error { 
+                        Message = $"Error while trying to create a menu",
+                        Exception = $"Already exist a menu with name '{menu.Name}' in the database. Cannot have duplicated document",
+                        InnerException = String.Empty
+                    };
+                }
+
                 _mongoDAO.Create(menu);
 
                 return new Response
@@ -83,6 +93,16 @@ namespace MenuManagerWebAPI.Services
         {
             try
             {
+                if (_mongoDAO.GetByFilter(Builders<Menu>.Filter.Eq(e => e.Name, menu.Name), null)?.Count > 0)
+                {
+                    return new Error
+                    {
+                        Message = $"Error while trying to update a menu",
+                        Exception = $"Already exist a menu with name '{menu.Name}' in the database. Cannot have duplicated document",
+                        InnerException = String.Empty
+                    };
+                }
+
                 _mongoDAO.Update(menu);
 
                 return new Response

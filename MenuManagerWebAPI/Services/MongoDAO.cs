@@ -5,7 +5,6 @@ using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace MenuManagerWebAPI.Services
 {
@@ -24,10 +23,7 @@ namespace MenuManagerWebAPI.Services
             mongoCollection = mongoDatabase.GetCollection<T>(_configuration["Mongo:MongoCollection"]);
         }
 
-        public async Task Create(T model)
-        {
-            await mongoCollection.InsertOneAsync(model);
-        }
+        public void Create(T model) => mongoCollection.InsertOne(model);
 
         public List<T> GetByFilter(FilterDefinition<T> filter, SortDefinition<T> sort = null)
         {
@@ -45,39 +41,24 @@ namespace MenuManagerWebAPI.Services
             return models;
         }
 
-        public T GetById(ObjectId id) => this.GetByFilter(Builders<T>.Filter.Eq(e => new ObjectId(e._id), id), null)?.FirstOrDefault();
+        public T GetById(string id) => this.GetByFilter(Builders<T>.Filter.Eq(e => e._id, id), null)?.FirstOrDefault();
 
-        public T GetById(string id) => this.GetById(new ObjectId(id));
+        public List<T> GetAll() => mongoCollection.Find(FilterDefinition<T>.Empty).ToList<T>();
 
-
-        public List<T> GetAll()
-        {
-            return mongoCollection.Find(FilterDefinition<T>.Empty).ToList<T>();
-        }
-
-        public async Task Update(T model)
+        public void Update(T model)
         {
             FilterDefinition<T> filter = Builders<T>.Filter.Eq("_id", model._id);
-            await mongoCollection.ReplaceOneAsync(filter, model);
+            mongoCollection.ReplaceOne(filter, model);
         }
 
-        public long Count(FilterDefinition<T> filter)
-        {
-            return mongoCollection.CountDocuments(filter);
-        }
+        public long Count(FilterDefinition<T> filter) => mongoCollection.CountDocuments(filter);
 
-        public async Task Remove(FilterDefinition<T> filter)
-        {
-            await mongoCollection.DeleteManyAsync(filter);
-        }
+        public void Remove(FilterDefinition<T> filter) => mongoCollection.DeleteMany(filter);
 
-        public async Task Remove(T model) => await this.Remove(Builders<T>.Filter.Eq("_id", model._id));
+        public void Remove(T model) => this.Remove(Builders<T>.Filter.Eq("_id", model._id));
 
-        public async Task Remove(string id) => await this.Remove(Builders<T>.Filter.Eq("_id", id));
+        public void Remove(string id) => this.Remove(Builders<T>.Filter.Eq("_id", id));
 
-        public async Task RemoveAll()
-        {
-            await mongoCollection.DeleteManyAsync(FilterDefinition<T>.Empty);
-        }
+        public void RemoveAll() => mongoCollection.DeleteMany(FilterDefinition<T>.Empty);
     }
 }
