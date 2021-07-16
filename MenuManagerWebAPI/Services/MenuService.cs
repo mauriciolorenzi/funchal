@@ -68,6 +68,27 @@ namespace MenuManagerWebAPI.Services
             }
         }
 
+        public Response GetByName(string name)
+        {
+            try
+            {
+                return new Data<Menu>
+                {
+                    Message = "Menu returned successfully",
+                    Object = _mongoDAO.GetByFilter(Builders<Menu>.Filter.Eq(e => e.Name, name), null)?.FirstOrDefault()
+                };
+            }
+            catch (Exception exception)
+            {
+                return new Error
+                {
+                    Message = "Error while trying to get menu by name",
+                    Exception = $"{exception}",
+                    InnerException = $"{exception.InnerException}"
+                };
+            }
+        }
+
         public Response GetAll()
         {
             try

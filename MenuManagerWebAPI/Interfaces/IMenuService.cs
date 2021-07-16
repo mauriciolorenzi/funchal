@@ -9,6 +9,8 @@ namespace MenuManagerWebAPI.Interfaces
 
         public Response GetById(string id);
 
+        public Response GetByName(string name);
+
         public Response GetAll();
 
         public Response Update(Menu model);
