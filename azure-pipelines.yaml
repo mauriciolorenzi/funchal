@@ -44,7 +44,7 @@ steps:
   displayName: Build and Push
   inputs:
     command: buildAndPush
-    repository: renatolcarvalho/devops
+    repository: mauriciolorenzi/menu-manager
     tags: |
       $(Build.BuildId)
         latest
