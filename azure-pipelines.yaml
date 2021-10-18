@@ -4,47 +4,36 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-steps:
 
-# dotnet
+stages:
+- stage: Build
+  displayName: Build image
+  jobs:
+  - job: Build
+    displayName: Build and push Docker image
+    steps:
 
-- task: DotNetCoreCLI@2
-  displayName: .Net Core Restore
-  inputs:
-    command: restore
-    projects: '**/*.csproj'
+      # docker
 
-- task: DotNetCoreCLI@2
-  displayName: .Net Core Build
-  inputs:
-    command: build
-    projects: '**/*.csproj'
-    arguments: '--configuration Release' # Update this to match your need
+    - task: Docker@2
+      displayName: 'Build the Docker image'
+      inputs:
+        containerRegistry: 'docker-hub'
+        command: 'build'
+        dockerFile: '**/Dockerfile'
+        buildContext: '.'
+        tags: |
+          $(Build.BuildId)
+            latest
 
-- task: DotNetCoreCLI@2
-  displayName: .Net Core Publish
-  inputs:
-    command: publish
-    publishWebProjects: false
-    projects: '**/*.csproj'
-    arguments: --output $(Build.ArtifactStagingDirectory)
-    zipAfterPublish: false
+    - task: Docker@2
+      displayName: 'Push the Docker image to Dockerhub'
+      inputs:
+        containerRegistry: 'docker-hub'
+        command: 'push'
+        repository: mauriciolorenzi/menu-manager
+      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
-- task: PublishBuildArtifacts@1
-  displayName: Artifacts Publish
-
-# docker
-
-- task: Docker@2
-  displayName: Login to Docker Hub
-  inputs:
-    command: login
-    containerRegistry: docker-hub
-- task: Docker@2
-  displayName: Build and Push
-  inputs:
-    command: buildAndPush
-    repository: mauriciolorenzi/menu-manager
-    tags: |
-      $(Build.BuildId)
-        latest
+      # artifacts
+    - task: PublishBuildArtifacts@1
+      displayName: Artifacts Publish
