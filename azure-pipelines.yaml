@@ -5,7 +5,7 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  image-name: 'menu-manager'
+  imageName: 'menu-manager'
 
 stages:
 - stage: Build
@@ -20,7 +20,7 @@ stages:
     - task: Docker@2
       displayName: 'Build the Docker image'
       inputs:
-        repository: $(image-name)
+        repository: $(imageName)
         containerRegistry: 'docker-hub'
         command: 'build'
         dockerFile: './menu-manager.Dockerfile'
