@@ -19,7 +19,7 @@ stages:
       inputs:
         containerRegistry: 'docker-hub'
         command: 'build'
-        dockerFile: '**/Dockerfile'
+        dockerFile: './menu-manager.Dockerfile'
         buildContext: '.'
         tags: |
           $(Build.BuildId)
