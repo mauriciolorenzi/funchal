@@ -4,19 +4,16 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  imageName: 'menu-manager'
-
 stages:
 - stage: Build
   displayName: Build image
   jobs:
   - job: Build
-    displayName: Build and push Docker image
+    displayName: Deploy Application
     steps:
-
       # docker
     - task: Docker@2
+      displayName: 'Build and push the Docker image to Docker-Hub'
       inputs:
         containerRegistry: 'docker-hub'
         repository: 'mauriciolorenzi/menu-manager'
@@ -25,26 +22,3 @@ stages:
         tags: |
           $(Build.BuildId)
           latest
-#    - task: Docker@2
-#      displayName: 'Build the Docker image'
-#      inputs:
-#        repository: $(imageName)
-#        containerRegistry: 'docker-hub'
-#        command: 'build'
-#        dockerFile: './menu-manager.Dockerfile'
-#        buildContext: '.'
-#        tags: |
-#          $(Build.BuildId)
-#            latest
-
-#    - task: Docker@2
-#      displayName: 'Push the Docker image to Dockerhub'
-#      inputs:
-#        containerRegistry: 'docker-hub'
-#        command: 'push'
-#        repository: mauriciolorenzi/menu-manager
-#      condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
-
-      # artifacts
-#    - task: PublishBuildArtifacts@1
-#      displayName: Artifacts Publish

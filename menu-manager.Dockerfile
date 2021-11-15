@@ -29,5 +29,4 @@ FROM base AS final
 WORKDIR /app
 
 COPY --from=publish /app/publish .
-#ENTRYPOINT ["dotnet", "MenuManagerWebAPI.dll"]
 CMD ASPNETCORE_URLS=http://*:$PORT dotnet MenuManagerWebAPI.dll
